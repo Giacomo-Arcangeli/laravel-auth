@@ -23,7 +23,8 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        $project = new Project();
+        return view('admin.projects.create', compact('project'));
     }
 
     /**
@@ -31,7 +32,22 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate(
+            [
+                'title' => 'required|string|max:50',
+                'description' => 'nullable|string',
+                'cover' => 'nullable|url'
+            ]
+        );
+
+        $data = $request->all();
+        $project = new Project();
+        $project->fill($data);
+        $project->save();
+
+        return to_route('admin.projects.index')
+            ->with('alert-type', 'success')
+            ->with('alert-message', "$project->title created successfully.");
     }
 
     /**
@@ -47,7 +63,7 @@ class ProjectController extends Controller
      */
     public function edit(Project $project)
     {
-        //
+        return view('admin.projects.edit', compact('project'));
     }
 
     /**
@@ -55,7 +71,19 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        //
+        $request->validate(
+            [
+                'title' => 'required|string|max:50',
+                'description' => 'nullable|string',
+                'cover' => 'nullable|url'
+            ]
+        );
+
+        $data = $request->all();
+        $project->update($data);
+        return to_route('admin.projects.show', $project)
+            ->with('alert-type', 'success')
+            ->with('alert-message', "$project->title updated successfully.");
     }
 
     /**

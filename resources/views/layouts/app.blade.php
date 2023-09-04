@@ -26,6 +26,10 @@
         @include('includes.navbar')
 
         <main class="container">
+
+            {{-- alerts --}}
+            @include('includes.alerts')
+
             @yield('content')
         </main>
     </div>
