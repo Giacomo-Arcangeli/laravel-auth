@@ -31,10 +31,11 @@
                             <a href="{{ route('admin.projects.edit', $project) }}" class="btn btn-warning">Edit</a>
 
                             {{-- delete --}}
-                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
-                                data-bs-target="#{{ $project->id }}">
-                                Delete
-                            </button>
+                            <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </td>
                 </tr>

@@ -18,10 +18,12 @@
                         <div class="buttons d-flex gap-1">
                             <a class="btn btn-primary" href="{{ route('admin.projects.index') }}">Back</a>
                             <a class="btn btn-warning" href="{{ route('admin.projects.edit', $project) }}">Edit</a>
-                            <button type="button" class="btn btn-danger ms-2" data-bs-toggle="modal"
-                                data-bs-target="#{{ $project->id }}">
-                                Delete
-                            </button>
+                            {{-- delete --}}
+                            <form action="{{ route('admin.projects.destroy', $project) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                     </div>
                 </div>
