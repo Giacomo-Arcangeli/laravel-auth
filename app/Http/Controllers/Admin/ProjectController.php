@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Project;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectController extends Controller
 {
@@ -32,22 +33,29 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate(
+        $data = $request->validate(
             [
                 'title' => 'required|string|max:50',
                 'description' => 'nullable|string',
-                'cover' => 'nullable|url'
+                'cover' => 'nullable|image:jpeg,jpg,png'
             ]
         );
 
-        $data = $request->all();
+        //$data = $request->all();
         $project = new Project();
+
+        if (array_key_exists('cover', $data)) {
+
+            $img_url = Storage::putFile('project_covers', $data['cover']);
+            $data['cover'] = $img_url;
+        }
+
         $project->fill($data);
         $project->save();
 
         return to_route('admin.projects.index')
             ->with('alert-type', 'success')
-            ->with('alert-message', "$project->title created successfully.");
+            ->with('alert-message', "$project->title created with success");
     }
 
     /**
@@ -71,19 +79,26 @@ class ProjectController extends Controller
      */
     public function update(Request $request, Project $project)
     {
-        $request->validate(
+        $data = $request->validate(
             [
                 'title' => 'required|string|max:50',
                 'description' => 'nullable|string',
-                'cover' => 'nullable|url'
+                'cover' => 'nullable|image:jpeg,jpg,png'
             ]
         );
 
-        $data = $request->all();
+        // $data = $request->all();
+
+        if (array_key_exists('cover', $data)) {
+            if ($project->cover) Storage::delete($project->cover);
+            $img_url = Storage::putFile('project_covers', $data['cover']);
+            $data['cover'] = $img_url;
+        }
+
         $project->update($data);
         return to_route('admin.projects.show', $project)
             ->with('alert-type', 'success')
-            ->with('alert-message', "$project->title updated successfully.");
+            ->with('alert-message', "$project->title updated with success");
     }
 
     /**
@@ -95,6 +110,6 @@ class ProjectController extends Controller
 
         return to_route('admin.projects.index')
             ->with('alert-type', 'success')
-            ->with('alert-message', "$project->title deleted successfully.");
+            ->with('alert-message', "$project->title deleted with success");
     }
 }

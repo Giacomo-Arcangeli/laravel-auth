@@ -5,7 +5,7 @@
         <div class="card mb-3">
             <div class="row g-0">
                 <div class="col-4">
-                    <img src="{{ $project->cover ?? 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp41IWFGc4DITJ1TKcUvwLnSavXinocukcMc2y5fXEAtCWDx4bQFOU1srExMJLtp3Aklo&usqp=CAU' }}"
+                    <img src="{{ $project->cover ? asset('storage/' . $project->cover) : 'https://marcolanci.it/utils/placeholder.jpg' }}"
                         class="img-fluid h-100" alt="{{ $project->title }}">
                 </div>
                 <div class="col-8">

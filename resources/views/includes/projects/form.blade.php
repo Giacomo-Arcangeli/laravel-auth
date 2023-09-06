@@ -1,8 +1,8 @@
 @if ($project->exists)
-    <form method="POST" action="{{ route('admin.projects.update', $project) }}">
+    <form method="POST" action="{{ route('admin.projects.update', $project) }}" enctype="multipart/form-data">
         @method('PUT')
     @else
-        <form method="POST" action="{{ route('admin.projects.store') }}">
+        <form method="POST" action="{{ route('admin.projects.store') }}" enctype="multipart/form-data">
 @endif
 @csrf
 
@@ -27,10 +27,10 @@
     {{-- Cover --}}
     <div class="col-12">
         <div class="mb-3">
-            <label for="cover" class="form-label">Cover</label>
-            <input type="url"
+            <label for="image" class="form-label">Cover</label>
+            <input type="file"
                 class="form-control @error('cover') is-invalid @elseif(old('cover')) is-valid @enderror"
-                id="cover" name="cover" value="{{ old('cover', $project->cover) }}">
+                id="cover" name="cover">
             @error('cover')
                 <div class="invalid-feedback">
                     {{ $message }}
